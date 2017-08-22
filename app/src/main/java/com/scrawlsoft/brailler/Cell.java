@@ -31,6 +31,7 @@ public class Cell {
     public char getCodePoint() {
         return (char) (dots + BRAILLE_PATTERN_BLANK);
     }
+    public int getValue() { return dots; }
 
     public Cell dot1() { this.dots |= DOT_1; return this; }
     public Cell dot2() { this.dots |= DOT_2; return this; }
@@ -40,4 +41,5 @@ public class Cell {
     public Cell dot6() { this.dots |= DOT_6; return this; }
     public Cell dot7() { this.dots |= DOT_7; return this; }
     public Cell dot8() { this.dots |= DOT_8; return this; }
+
 }
