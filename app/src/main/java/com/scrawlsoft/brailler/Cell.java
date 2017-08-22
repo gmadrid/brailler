@@ -6,9 +6,9 @@ package com.scrawlsoft.brailler;
  * since why not? This also means that we can convert easily to the Unicode character for a cell
  * by simple adding the dot values to U+2800.
  *
- *      1 (0x1)  o  o 4 (0x8)
- *      2 (0x2)  o  o 5 (0x10)
- *      3 (0x4)  o  o 6 (0x20)
+ *      1  (0x1) o  o 4 (0x8)
+ *      2  (0x2) o  o 5 (0x10)
+ *      3  (0x4) o  o 6 (0x20)
  *      7 (0x40) o  o 8 (0x80)
  *
  *  So, for example, a Braille 'e', encoded as dots 1,5, would be 0x01 + 0x10 = 0x11.
