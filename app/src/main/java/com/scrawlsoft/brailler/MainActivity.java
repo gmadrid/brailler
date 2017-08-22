@@ -15,11 +15,10 @@ public class MainActivity extends AppCompatActivity {
         EditText editText = (EditText) findViewById(R.id.textThing);
         editText.setText("GEORGE");
 
-        Cell cellF = new Cell((char) (Cell.DOT_1 | Cell.DOT_2 | Cell.DOT_4));
-        Cell cellO = new Cell((char) (Cell.DOT_1 | Cell.DOT_3 | Cell.DOT_5));
+        Cell cellF = new Cell().dot1().dot2().dot4();
+        Cell cellO = new Cell().dot1().dot3().dot5();
 
         String foo = "FOO: " + cellF.getCodePoint() + cellO.getCodePoint() + cellO.getCodePoint();
         editText.setText(foo);
-
     }
 }

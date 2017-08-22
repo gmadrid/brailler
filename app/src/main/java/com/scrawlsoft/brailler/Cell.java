@@ -24,13 +24,20 @@ public class Cell {
     public static final int DOT_7 = 0x40;
     public static final int DOT_8 = 0x80;
 
-    private char dots;
+    private char dots = 0;
 
-    public Cell(char dots) {
-        this.dots = dots;
-    }
+    public Cell() {}
 
     public char getCodePoint() {
         return (char) (dots + BRAILLE_PATTERN_BLANK);
     }
+
+    public Cell dot1() { this.dots |= DOT_1; return this; }
+    public Cell dot2() { this.dots |= DOT_2; return this; }
+    public Cell dot3() { this.dots |= DOT_3; return this; }
+    public Cell dot4() { this.dots |= DOT_4; return this; }
+    public Cell dot5() { this.dots |= DOT_5; return this; }
+    public Cell dot6() { this.dots |= DOT_6; return this; }
+    public Cell dot7() { this.dots |= DOT_7; return this; }
+    public Cell dot8() { this.dots |= DOT_8; return this; }
 }
