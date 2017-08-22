@@ -14,6 +14,7 @@ package com.scrawlsoft.brailler;
  *  So, for example, a Braille 'e', encoded as dots 1,5, would be 0x01 + 0x10 = 0x11.
  */
 public class Cell {
+    private static final char BRAILLE_PATTERN_BLANK = '\u2800';
     public static final int DOT_1 = 0x01;
     public static final int DOT_2 = 0x02;
     public static final int DOT_3 = 0x04;
@@ -23,13 +24,13 @@ public class Cell {
     public static final int DOT_7 = 0x40;
     public static final int DOT_8 = 0x80;
 
-    private char encoded;
+    private char dots;
 
-    public Cell(char value) {
-        this.encoded = value;
+    public Cell(char dots) {
+        this.dots = dots;
     }
 
-    public int getCodePoint() {
-        Character.
+    public char getCodePoint() {
+        return (char) (dots + BRAILLE_PATTERN_BLANK);
     }
 }
