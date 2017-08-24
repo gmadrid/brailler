@@ -61,6 +61,7 @@ class Brailler {
                         return dot1Value + dot2Value + dot3Value + dot4Value + dot5Value + dot6Value;
                     }
                 })
+                // TODO: can you get this subscribe() call out of here?
                 .subscribe(new Consumer<Integer>() {
                     @Override
                     public void accept(Integer combinedValue) throws Exception {

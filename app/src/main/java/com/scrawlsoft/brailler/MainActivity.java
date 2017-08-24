@@ -7,9 +7,11 @@ import android.widget.EditText;
 
 import com.jakewharton.rxbinding2.view.RxView;
 
+import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -19,19 +21,36 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RxView.touches(findViewById(R.id.dot6)).map(new Function<Object, Object>() {
+        Observable<Boolean>[] observables = new Observable[] {
+                convertMotionToBooleanObservable(R.id.dot1),
+                convertMotionToBooleanObservable(R.id.dot2),
+                convertMotionToBooleanObservable(R.id.dot3),
+                convertMotionToBooleanObservable(R.id.dot4),
+                convertMotionToBooleanObservable(R.id.dot5),
+                convertMotionToBooleanObservable(R.id.dot6)
+        };
 
+        Brailler brailler = new Brailler(observables);
+        brailler.getOutput().subscribe(new Consumer<Cell>() {
             @Override
-            public Object apply(@NonNull Object o) throws Exception {
-                MotionEvent evt = (MotionEvent) o;
-
-                System.out.println(evt.getAction());
-                return new Integer(3);
+            public void accept(Cell cell) throws Exception {
+                System.out.println(cell.getCodePoint());
             }
-        }).subscribe(new Consumer<Object>() {
+        });
+    }
+
+    final Observable<Boolean> convertMotionToBooleanObservable(int id) {
+        return RxView.touches(findViewById(id)).filter(new Predicate<MotionEvent>() {
             @Override
-            public void accept(Object o) throws Exception {
-//                System.out.println(o);
+            public boolean test(@NonNull MotionEvent motionEvent) throws Exception {
+                // TODO: what about cancel??
+                return motionEvent.getAction() == MotionEvent.ACTION_DOWN ||
+                        motionEvent.getAction() == MotionEvent.ACTION_UP;
+            }
+        }).map(new Function<MotionEvent, Boolean>() {
+            @Override
+            public Boolean apply(@NonNull MotionEvent evt) throws Exception {
+                return evt.getAction() == MotionEvent.ACTION_DOWN;
             }
         });
     }
