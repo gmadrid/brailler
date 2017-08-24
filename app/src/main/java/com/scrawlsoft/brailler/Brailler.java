@@ -5,6 +5,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Function6;
 import io.reactivex.subjects.PublishSubject;
@@ -24,6 +25,8 @@ import io.reactivex.subjects.PublishSubject;
  */
 public class Brailler {
     private PublishSubject<Cell> cellOutputSubject = PublishSubject.create();
+
+    private int lastValue = 0;
 
     public Brailler(Observable<Boolean>[] switches) {
         if (switches.length != 6) {
@@ -49,7 +52,19 @@ public class Brailler {
                     public Integer apply(@NonNull Integer integer, @NonNull Integer integer2, @NonNull Integer integer3, @NonNull Integer integer4, @NonNull Integer integer5, @NonNull Integer integer6) throws Exception {
                         return integer + integer2 + integer3 + integer4 + integer5 + integer6;
                     }
+                })
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        if (integer < lastValue) {
+                            cellOutputSubject.onNext(new Cell(lastValue));
+                        }
+                        lastValue = integer;
+                    }
                 });
+
+
+
     }
 
     private static Observable<Integer> switchWithValue(Observable<Boolean> swtch, final int value) {
@@ -58,7 +73,7 @@ public class Brailler {
             public Integer apply(@NonNull Boolean aBoolean) throws Exception {
                 return aBoolean ? value : 0;
             }
-        });
+        }).startWith(0);
     }
 
     public Observable<Cell> getOutput() { return cellOutputSubject.hide(); }

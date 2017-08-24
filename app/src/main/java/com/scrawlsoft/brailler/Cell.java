@@ -26,6 +26,7 @@ public class Cell {
 
     private char dots = 0;
 
+    public Cell(int value) { dots = (char) value; }
     public Cell() {}
 
     public char getCodePoint() {

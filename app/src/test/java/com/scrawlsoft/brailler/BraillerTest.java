@@ -89,10 +89,15 @@ public class BraillerTest {
         assertNull(outputCell);
 
         // Simulate pushing and releasing dots 1, 2, 4, 5.
+        // Make sure that there is no output until the first released key.
         dot1.onNext(true);
+        assertNull(outputCell);
         dot2.onNext(true);
+        assertNull(outputCell);
         dot4.onNext(true);
+        assertNull(outputCell);
         dot5.onNext(true);
+        assertNull(outputCell);
 
         // Immediately on releasing a single key, we should get output.
         dot1.onNext(false);
