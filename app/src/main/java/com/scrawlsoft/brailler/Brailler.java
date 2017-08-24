@@ -78,6 +78,7 @@ public class Brailler {
                         // As soon as all switches are released, start over.
                         if (combinedValue == 0) {
                             resetting = false;
+                            lastValue = 0;
                         }
                     }
                 });

@@ -23,6 +23,7 @@ public class BraillerTest {
     PublishSubject<Boolean> dot6 = PublishSubject.create();
 
     Cell outputCell;
+    int outputCount = 0;
 
     Brailler makeStandardBrailler() {
         List<Observable<Boolean>> dotList = new ArrayList<>();
@@ -65,7 +66,6 @@ public class BraillerTest {
             @Override
             public void accept(Cell cell) throws Exception {
                 outputCell = cell;
-                System.out.println(cell);
             }});
 
         assertNull(outputCell);
@@ -87,7 +87,6 @@ public class BraillerTest {
             @Override
             public void accept(Cell cell) throws Exception {
                 outputCell = cell;
-                System.out.println(cell);
             }});
 
         assertNull(outputCell);
@@ -118,6 +117,38 @@ public class BraillerTest {
 
         // We should output a cell with only dot 1 set.
         assertEquals(Cell.DOT_1 | Cell.DOT_2 | Cell.DOT_4 | Cell.DOT_5, outputCell.getValue());
+    }
+
+    @Test
+    public void brailler_two_cells() {
+        Brailler brailler = makeStandardBrailler();
+
+        brailler.getOutput().subscribe(new Consumer<Cell>() {
+            @Override
+            public void accept(Cell cell) throws Exception {
+                outputCell = cell;
+                outputCount++;
+            }});
+
+        // Simulate an 'e'
+        dot1.onNext(true);
+        dot5.onNext(true);
+        dot1.onNext(false);
+        dot5.onNext(false);
+        Cell firstCell = outputCell;
+
+        // Simulate an 'i' with an extra key hit in the middle of resetting.
+        dot2.onNext(true);
+        dot4.onNext(true);
+        dot4.onNext(false);
+        dot5.onNext(true);
+        dot2.onNext(false);
+        dot5.onNext(false);
+        Cell secondCell = outputCell;
+
+        assertEquals(outputCount, 2);
+        assertEquals(Cell.DOT_1 | Cell.DOT_5, firstCell.getValue());
+        assertEquals(Cell.DOT_2 | Cell.DOT_4, secondCell.getValue());
     }
 }
 
