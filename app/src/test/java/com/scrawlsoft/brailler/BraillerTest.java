@@ -6,13 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 
 public class BraillerTest {
@@ -26,7 +25,7 @@ public class BraillerTest {
     Cell outputCell;
 
     Brailler makeStandardBrailler() {
-        List<Observable<Boolean>> dotList = new ArrayList();
+        List<Observable<Boolean>> dotList = new ArrayList<>();
         dotList.add(dot1);
         dotList.add(dot2);
         dotList.add(dot3);
@@ -38,7 +37,7 @@ public class BraillerTest {
 
     @Test
     public void brailler_create_valid() throws Exception {
-        List<Observable<Boolean>> observables = new ArrayList(6);
+        List<Observable<Boolean>> observables = new ArrayList<>(6);
         for (int i = 0; i < 6; i++) {
             observables.add(Observable.just(true));
         }
@@ -47,7 +46,7 @@ public class BraillerTest {
 
     @Test(expected = java.lang.IllegalArgumentException.class)
     public void brailler_create_fails_bad_size() throws Exception {
-        List<Observable<Boolean>> observables = new ArrayList(5);
+        List<Observable<Boolean>> observables = new ArrayList<>(5);
         for (int i = 0; i < 5; i++) {
             observables.add(Observable.just(true));
         }
