@@ -13,34 +13,33 @@ package com.scrawlsoft.brailler;
  *
  *  So, for example, a Braille 'e', encoded as dots 1,5, would be 0x01 + 0x10 = 0x11.
  */
-public class Cell {
+class Cell {
     private static final char BRAILLE_PATTERN_BLANK = '\u2800';
-    public static final int DOT_1 = 0x01;
-    public static final int DOT_2 = 0x02;
-    public static final int DOT_3 = 0x04;
-    public static final int DOT_4 = 0x08;
-    public static final int DOT_5 = 0x10;
-    public static final int DOT_6 = 0x20;
-    public static final int DOT_7 = 0x40;
-    public static final int DOT_8 = 0x80;
+    static final int DOT_1 = 0x01;
+    static final int DOT_2 = 0x02;
+    static final int DOT_3 = 0x04;
+    static final int DOT_4 = 0x08;
+    static final int DOT_5 = 0x10;
+    static final int DOT_6 = 0x20;
+    static final int DOT_7 = 0x40;
+    static final int DOT_8 = 0x80;
 
     private char dots = 0;
 
-    public Cell(int value) { dots = (char) value; }
-    public Cell() {}
+    Cell(int value) { dots = (char) value; }
+    Cell() {}
 
-    public char getCodePoint() {
+    char getCodePoint() {
         return (char) (dots + BRAILLE_PATTERN_BLANK);
     }
-    public int getValue() { return dots; }
+    int getValue() { return dots; }
 
-    public Cell dot1() { this.dots |= DOT_1; return this; }
-    public Cell dot2() { this.dots |= DOT_2; return this; }
-    public Cell dot3() { this.dots |= DOT_3; return this; }
-    public Cell dot4() { this.dots |= DOT_4; return this; }
-    public Cell dot5() { this.dots |= DOT_5; return this; }
-    public Cell dot6() { this.dots |= DOT_6; return this; }
-    public Cell dot7() { this.dots |= DOT_7; return this; }
-    public Cell dot8() { this.dots |= DOT_8; return this; }
-
+    Cell dot1() { this.dots |= DOT_1; return this; }
+    Cell dot2() { this.dots |= DOT_2; return this; }
+    Cell dot3() { this.dots |= DOT_3; return this; }
+    Cell dot4() { this.dots |= DOT_4; return this; }
+    Cell dot5() { this.dots |= DOT_5; return this; }
+    Cell dot6() { this.dots |= DOT_6; return this; }
+    Cell dot7() { this.dots |= DOT_7; return this; }
+    Cell dot8() { this.dots |= DOT_8; return this; }
 }

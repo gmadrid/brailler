@@ -23,13 +23,13 @@ import io.reactivex.subjects.PublishSubject;
  * - when any switch turns off, the accumulated switches are aggregated into a single Cell output,
  * - all switches must be turned off before another Cell can be started.
  */
-public class Brailler {
+class Brailler {
     private PublishSubject<Cell> cellOutputSubject = PublishSubject.create();
 
     private boolean resetting = false;
     private int lastValue = 0;
 
-    public Brailler(Observable<Boolean>[] switches) {
+    Brailler(Observable<Boolean>[] switches) {
         if (switches.length != 6) {
             throw new IllegalArgumentException("Brailler must get 6 switches.");
         }
@@ -82,9 +82,6 @@ public class Brailler {
                         }
                     }
                 });
-
-
-
     }
 
     private static Observable<Integer> switchWithValue(Observable<Boolean> swtch, final int value) {
@@ -96,5 +93,5 @@ public class Brailler {
         }).startWith(0);
     }
 
-    public Observable<Cell> getOutput() { return cellOutputSubject.hide(); }
+    Observable<Cell> getOutput() { return cellOutputSubject.hide(); }
 }
