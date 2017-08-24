@@ -26,6 +26,7 @@ import io.reactivex.subjects.PublishSubject;
 public class Brailler {
     private PublishSubject<Cell> cellOutputSubject = PublishSubject.create();
 
+    private boolean resetting = false;
     private int lastValue = 0;
 
     public Brailler(Observable<Boolean>[] switches) {
@@ -33,6 +34,7 @@ public class Brailler {
             throw new IllegalArgumentException("Brailler must get 6 switches.");
         }
 
+        // Assign each switch to a value equivalent to its dot number's value.
         List<Observable<Integer>> switchesWithValues = new ArrayList<>(switches.length);
         int value = 1;
         for (Observable<Boolean> swtch : switches) {
@@ -41,6 +43,7 @@ public class Brailler {
             value *= 2;
         }
 
+        // Combine all of the dot values into a single cell value when the conditions are met.
         Observable.combineLatest(switchesWithValues.get(0),
                 switchesWithValues.get(1),
                 switchesWithValues.get(2),
@@ -49,17 +52,33 @@ public class Brailler {
                 switchesWithValues.get(5),
                 new Function6<Integer, Integer, Integer, Integer, Integer, Integer, Integer>() {
                     @Override
-                    public Integer apply(@NonNull Integer integer, @NonNull Integer integer2, @NonNull Integer integer3, @NonNull Integer integer4, @NonNull Integer integer5, @NonNull Integer integer6) throws Exception {
-                        return integer + integer2 + integer3 + integer4 + integer5 + integer6;
+                    public Integer apply(@NonNull Integer dot1Value,
+                                         @NonNull Integer dot2Value,
+                                         @NonNull Integer dot3Value,
+                                         @NonNull Integer dot4Value,
+                                         @NonNull Integer dot5Value,
+                                         @NonNull Integer dot6Value) throws Exception {
+                        return dot1Value + dot2Value + dot3Value + dot4Value + dot5Value + dot6Value;
                     }
                 })
                 .subscribe(new Consumer<Integer>() {
                     @Override
-                    public void accept(Integer integer) throws Exception {
-                        if (integer < lastValue) {
+                    public void accept(Integer combinedValue) throws Exception {
+                        // The value will go down as soon as we release any key.
+                        // If we are resetting, then never send a value.
+                        if (!resetting && combinedValue < lastValue) {
+                            // Send the value *before* releasing a key, and enter resetting state.
                             cellOutputSubject.onNext(new Cell(lastValue));
+                            resetting = true;
                         }
-                        lastValue = integer;
+                        if (!resetting) {
+                            lastValue = combinedValue;
+                        }
+
+                        // As soon as all switches are released, start over.
+                        if (combinedValue == 0) {
+                            resetting = false;
+                        }
                     }
                 });
 
@@ -77,6 +96,4 @@ public class Brailler {
     }
 
     public Observable<Cell> getOutput() { return cellOutputSubject.hide(); }
-
-
 }

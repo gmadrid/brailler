@@ -53,6 +53,10 @@ public class BraillerTest {
         Brailler brailler = new Brailler(observables.toArray(new Observable[0]));
     }
 
+
+    /*
+     * A very simple test case that checks behavior with a single key switch.
+     */
     @Test
     public void brailler_simple_a() {
         Brailler brailler = makeStandardBrailler();
@@ -102,6 +106,15 @@ public class BraillerTest {
         // Immediately on releasing a single key, we should get output.
         dot1.onNext(false);
         assertNotNull(outputCell);
+
+        // Check that there is no new cell value as we release keys.
+        Cell rememberedCell = outputCell;
+        dot2.onNext(false);
+        assertEquals(rememberedCell, outputCell);
+        dot3.onNext(false);
+        assertEquals(rememberedCell, outputCell);
+        dot4.onNext(false);
+        assertEquals(rememberedCell, outputCell);
 
         // We should output a cell with only dot 1 set.
         assertEquals(Cell.DOT_1 | Cell.DOT_2 | Cell.DOT_4 | Cell.DOT_5, outputCell.getValue());
