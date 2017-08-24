@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
 
@@ -35,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void accept(Cell cell) throws Exception {
                 System.out.println(cell.getCodePoint());
+                TextView textView = (TextView) findViewById(R.id.textView);
+                textView.append("" + cell.getCodePoint());
             }
         });
     }
