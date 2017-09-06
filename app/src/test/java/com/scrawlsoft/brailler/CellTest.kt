@@ -16,19 +16,19 @@ class CellTest {
 
     @Test
     fun basicBuilder() {
-        val cell13 = Cell.new().dot1().dot3().toCell()
+        val cell13 = Cell.build().dot1().dot3().toCell()
         assertEquals(0b00000101.toShort(), cell13.toShort())
 
-        val cell12345678 = Cell.new().dot1().dot2().dot3().dot4().dot5().dot6().dot7().dot8().toCell()
+        val cell12345678 = Cell.build().dot1().dot2().dot3().dot4().dot5().dot6().dot7().dot8().toCell()
         assertEquals(0b11111111.toShort(), cell12345678.toShort())
     }
 
     @Test
     fun getCodePoint() {
-        val cellA = Cell.new().dot1().toCell()
+        val cellA = Cell.build().dot1().toCell()
         assertEquals('⠁', cellA.codePoint)
 
-        var cellG = Cell.new().dot1().dot2().dot4().dot5().toCell()
+        var cellG = Cell.build().dot1().dot2().dot4().dot5().toCell()
         assertEquals('⠛', cellG.codePoint)
     }
 }

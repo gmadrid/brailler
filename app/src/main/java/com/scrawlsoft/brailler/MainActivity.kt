@@ -8,6 +8,15 @@ import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 
+// 1. Create 'LEDs' to show which buttons are pushed.
+// 2. Switch to views for the buttons
+// 3. Make the buttons turn red when pushed.
+// 4. Make the red be 'sticky' until the Cell is produced.
+// 5. Add delete, space, return buttons.
+// 6. Disable delete, space, return, while an embossing key is pressed.
+// 7. Disable embossing keys while delete, space, or return is pressed.
+// 8. Haptic feedback when any key is pressed.
+// 9. Make "switched" mode.
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

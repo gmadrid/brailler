@@ -21,6 +21,7 @@ class Brailler(switches: Array<Observable<Boolean>>) {
         }
 
         fun switchWithValue(switch: Observable<Boolean>, value: Int) : Observable<Int> {
+            // Map the incoming Boolean to the supplied value (or 0 iff false). Prime it with 0.
             return switch.map {
                 if (it) { value } else { 0 }
             }.startWith(0)

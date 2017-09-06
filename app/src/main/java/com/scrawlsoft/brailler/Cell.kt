@@ -52,7 +52,7 @@ data class Cell(private val dotsAsBits: Short) {
         const val DOT7: Int = 0x40
         const val DOT8: Int = 0x80
 
-        fun new() : Builder {
+        fun build() : Builder {
             return Builder()
         }
     }

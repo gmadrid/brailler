@@ -15,17 +15,17 @@ import static org.junit.Assert.assertNull;
 
 
 public class BraillerTest {
-    PublishSubject<Boolean> dot1 = PublishSubject.create();
-    PublishSubject<Boolean> dot2 = PublishSubject.create();
-    PublishSubject<Boolean> dot3 = PublishSubject.create();
-    PublishSubject<Boolean> dot4 = PublishSubject.create();
-    PublishSubject<Boolean> dot5 = PublishSubject.create();
-    PublishSubject<Boolean> dot6 = PublishSubject.create();
+    private PublishSubject<Boolean> dot1 = PublishSubject.create();
+    private PublishSubject<Boolean> dot2 = PublishSubject.create();
+    private PublishSubject<Boolean> dot3 = PublishSubject.create();
+    private PublishSubject<Boolean> dot4 = PublishSubject.create();
+    private PublishSubject<Boolean> dot5 = PublishSubject.create();
+    private PublishSubject<Boolean> dot6 = PublishSubject.create();
 
-    Cell outputCell;
-    int outputCount = 0;
+    private Cell outputCell;
+    private int outputCount = 0;
 
-    Brailler makeStandardBrailler() {
+    private Brailler makeStandardBrailler() {
         List<Observable<Boolean>> dotList = new ArrayList<>();
         dotList.add(dot1);
         dotList.add(dot2);
@@ -42,7 +42,7 @@ public class BraillerTest {
         for (int i = 0; i < 6; i++) {
             observables.add(Observable.just(true));
         }
-        Brailler brailler = new Brailler(observables.toArray(new Observable[0]));
+        new Brailler(observables.toArray(new Observable[0]));
     }
 
     @Test(expected = java.lang.IllegalArgumentException.class)
@@ -51,7 +51,7 @@ public class BraillerTest {
         for (int i = 0; i < 5; i++) {
             observables.add(Observable.just(true));
         }
-        Brailler brailler = new Brailler(observables.toArray(new Observable[0]));
+        new Brailler(observables.toArray(new Observable[0]));
     }
 
 
