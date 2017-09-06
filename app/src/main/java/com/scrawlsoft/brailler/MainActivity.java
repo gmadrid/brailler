@@ -31,10 +31,10 @@ public class MainActivity extends AppCompatActivity {
                 convertMotionToBooleanObservable(R.id.dot6)
         };
 
-        Brailler brailler = new Brailler(observables);
-        brailler.getOutput().subscribe(new Consumer<Cell>() {
+        KBrailler brailler = new KBrailler(observables);
+        brailler.getOutput().subscribe(new Consumer<KCell>() {
             @Override
-            public void accept(Cell cell) throws Exception {
+            public void accept(KCell cell) throws Exception {
                 System.out.println(cell.getCodePoint());
                 TextView textView = (TextView) findViewById(R.id.textView);
                 textView.append("" + cell.getCodePoint());

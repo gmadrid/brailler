@@ -1,14 +1,5 @@
 package com.scrawlsoft.brailler
 
-private const val DOT1: Int = 0x01
-private const val DOT2: Int = 0x02
-private const val DOT3: Int = 0x04
-private const val DOT4: Int = 0x08
-private const val DOT5: Int = 0x10
-private const val DOT6: Int = 0x20
-private const val DOT7: Int = 0x40
-private const val DOT8: Int = 0x80
-
 /**
  * A braille cell has 6 (or 8) dots which can be easily encoded into a single byte.
  * We choose to use the same bit correspondences as the Unicode Braille Patterns
@@ -52,6 +43,14 @@ data class KCell(private val dotsAsBits: Short) {
 
     companion object {
         private const val BRAILLE_PATTERN_BLANK: Short = '\u2800'.toShort();
+        const val DOT1: Int = 0x01
+        const val DOT2: Int = 0x02
+        const val DOT3: Int = 0x04
+        const val DOT4: Int = 0x08
+        const val DOT5: Int = 0x10
+        const val DOT6: Int = 0x20
+        const val DOT7: Int = 0x40
+        const val DOT8: Int = 0x80
 
         fun new() : Builder {
             return Builder()
