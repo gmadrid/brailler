@@ -15,11 +15,11 @@ package com.scrawlsoft.brailler
  *
  *  You may also use the Builder, so a Braille 'e' would be:
  *
- *    KCell.new().dot1().dot5().toCell()
+ *    Cell.new().dot1().dot5().toCell()
  *
- *  Once instantiated, the KCell is immutable.
+ *  Once instantiated, the Cell is immutable.
  */
-data class KCell(private val dotsAsBits: Short) {
+data class Cell(private val dotsAsBits: Short) {
     val codePoint: Char
         get() = (BRAILLE_PATTERN_BLANK + dotsAsBits).toChar()
 
@@ -38,7 +38,7 @@ data class KCell(private val dotsAsBits: Short) {
         fun dot7(): Builder { bits = bits.or(DOT7); return this }
         fun dot8(): Builder { bits = bits.or(DOT8); return this }
 
-        fun toCell() = KCell(bits.toShort())
+        fun toCell() = Cell(bits.toShort())
     }
 
     companion object {

@@ -22,10 +22,10 @@ public class BraillerTest {
     PublishSubject<Boolean> dot5 = PublishSubject.create();
     PublishSubject<Boolean> dot6 = PublishSubject.create();
 
-    KCell outputCell;
+    Cell outputCell;
     int outputCount = 0;
 
-    KBrailler makeStandardBrailler() {
+    Brailler makeStandardBrailler() {
         List<Observable<Boolean>> dotList = new ArrayList<>();
         dotList.add(dot1);
         dotList.add(dot2);
@@ -33,7 +33,7 @@ public class BraillerTest {
         dotList.add(dot4);
         dotList.add(dot5);
         dotList.add(dot6);
-        return new KBrailler(dotList.toArray(new Observable[0]));
+        return new Brailler(dotList.toArray(new Observable[0]));
     }
 
     @Test
@@ -42,7 +42,7 @@ public class BraillerTest {
         for (int i = 0; i < 6; i++) {
             observables.add(Observable.just(true));
         }
-        KBrailler brailler = new KBrailler(observables.toArray(new Observable[0]));
+        Brailler brailler = new Brailler(observables.toArray(new Observable[0]));
     }
 
     @Test(expected = java.lang.IllegalArgumentException.class)
@@ -51,7 +51,7 @@ public class BraillerTest {
         for (int i = 0; i < 5; i++) {
             observables.add(Observable.just(true));
         }
-        KBrailler brailler = new KBrailler(observables.toArray(new Observable[0]));
+        Brailler brailler = new Brailler(observables.toArray(new Observable[0]));
     }
 
 
@@ -60,11 +60,11 @@ public class BraillerTest {
      */
     @Test
     public void brailler_simple_a() {
-        KBrailler brailler = makeStandardBrailler();
+        Brailler brailler = makeStandardBrailler();
 
-        brailler.getOutput().subscribe(new Consumer<KCell>() {
+        brailler.getOutput().subscribe(new Consumer<Cell>() {
             @Override
-            public void accept(KCell cell) throws Exception {
+            public void accept(Cell cell) throws Exception {
                 outputCell = cell;
             }});
 
@@ -76,16 +76,16 @@ public class BraillerTest {
         assertNotNull(outputCell);
 
         // We should output a cell with only dot 1 set.
-        assertEquals(KCell.DOT1, outputCell.toShort());
+        assertEquals(Cell.DOT1, outputCell.toShort());
     }
 
     @Test
     public void brailler_simple_g() {
-        KBrailler brailler = makeStandardBrailler();
+        Brailler brailler = makeStandardBrailler();
 
-        brailler.getOutput().subscribe(new Consumer<KCell>() {
+        brailler.getOutput().subscribe(new Consumer<Cell>() {
             @Override
-            public void accept(KCell cell) throws Exception {
+            public void accept(Cell cell) throws Exception {
                 outputCell = cell;
             }});
 
@@ -107,7 +107,7 @@ public class BraillerTest {
         assertNotNull(outputCell);
 
         // Check that there is no new cell value as we release keys.
-        KCell rememberedCell = outputCell;
+        Cell rememberedCell = outputCell;
         dot2.onNext(false);
         assertEquals(rememberedCell, outputCell);
         dot3.onNext(false);
@@ -116,16 +116,16 @@ public class BraillerTest {
         assertEquals(rememberedCell, outputCell);
 
         // We should output a cell with only dot 1 set.
-        assertEquals(KCell.DOT1 | KCell.DOT2 | KCell.DOT4 | KCell.DOT5, outputCell.toShort());
+        assertEquals(Cell.DOT1 | Cell.DOT2 | Cell.DOT4 | Cell.DOT5, outputCell.toShort());
     }
 
     @Test
     public void brailler_two_cells() {
-        KBrailler brailler = makeStandardBrailler();
+        Brailler brailler = makeStandardBrailler();
 
-        brailler.getOutput().subscribe(new Consumer<KCell>() {
+        brailler.getOutput().subscribe(new Consumer<Cell>() {
             @Override
-            public void accept(KCell cell) throws Exception {
+            public void accept(Cell cell) throws Exception {
                 outputCell = cell;
                 outputCount++;
             }});
@@ -135,7 +135,7 @@ public class BraillerTest {
         dot5.onNext(true);
         dot1.onNext(false);
         dot5.onNext(false);
-        KCell firstCell = outputCell;
+        Cell firstCell = outputCell;
 
         // Simulate an 'i' with an extra key hit in the middle of resetting.
         dot2.onNext(true);
@@ -144,11 +144,11 @@ public class BraillerTest {
         dot5.onNext(true);
         dot2.onNext(false);
         dot5.onNext(false);
-        KCell secondCell = outputCell;
+        Cell secondCell = outputCell;
 
         assertEquals(outputCount, 2);
-        assertEquals(KCell.DOT1 | KCell.DOT5, firstCell.toShort());
-        assertEquals(KCell.DOT2 | KCell.DOT4, secondCell.toShort());
+        assertEquals(Cell.DOT1 | Cell.DOT5, firstCell.toShort());
+        assertEquals(Cell.DOT2 | Cell.DOT4, secondCell.toShort());
     }
 }
 

@@ -5,11 +5,11 @@ import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
 
-class KBrailler(switches: Array<Observable<Boolean>>) {
-    val output: Observable<KCell>
+class Brailler(switches: Array<Observable<Boolean>>) {
+    val output: Observable<Cell>
         get() = cellOutputSubject.hide()
 
-    private val cellOutputSubject: PublishSubject<KCell>
+    private val cellOutputSubject: PublishSubject<Cell>
     private var resetting: Boolean = false
     private var lastValue: Int = 0
 
@@ -47,7 +47,7 @@ class KBrailler(switches: Array<Observable<Boolean>>) {
                     if (!resetting && combinedValue < lastValue) {
                         // Send the value *before* releasing a key, and enter resetting state.
                         // cellOutputSubject foo
-                        cellOutputSubject.onNext(KCell(lastValue.toShort()))
+                        cellOutputSubject.onNext(Cell(lastValue.toShort()))
                         resetting = true
                     }
                     if (!resetting) {
