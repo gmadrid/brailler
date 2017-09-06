@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         app:layout_constraintStart_toEndOf="@id/dot2"
         app:layout_constraintEnd_toStartOf="@id/dot4"
-        android:background="@color/colorPrimaryDark"
+        android:background="#44ff44"
         />
     <View
         android:id="@+id/dot2"
@@ -22,6 +22,7 @@
         android:layout_height="match_parent"
         app:layout_constraintStart_toEndOf="@id/dot3"
         app:layout_constraintEnd_toStartOf="@id/dot1"
+        android:background="#55cc55"
         />
     <View
         android:id="@+id/dot3"
@@ -29,6 +30,7 @@
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/dot2"
+        android:background="#668866"
         />
     <View
         android:id="@+id/dot4"
@@ -36,6 +38,7 @@
         android:layout_height="match_parent"
         app:layout_constraintStart_toEndOf="@id/dot1"
         app:layout_constraintEnd_toStartOf="@id/dot5"
+        android:background="#4444ff"
         />
     <View
         android:id="@+id/dot5"
@@ -43,6 +46,7 @@
         android:layout_height="match_parent"
         app:layout_constraintStart_toEndOf="@id/dot4"
         app:layout_constraintEnd_toStartOf="@id/dot6"
+        android:background="#5555cc"
         />
     <View
         android:id="@+id/dot6"
@@ -50,6 +54,7 @@
         android:layout_height="match_parent"
         app:layout_constraintStart_toEndOf="@id/dot5"
         app:layout_constraintEnd_toEndOf="parent"
+        android:background="#666688"
         />
 
     <TextView
