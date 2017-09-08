@@ -64,9 +64,83 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@android:color/background_light"
         android:textSize="30sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         tools:layout_editor_absoluteY="7dp" />
+
+
+    <View
+        android:id="@+id/circle1"
+        android:layout_width="@dimen/led_diameter"
+        android:layout_height="@dimen/led_diameter"
+        android:background="@drawable/circle"
+        app:layout_constraintEnd_toEndOf="@id/dot1"
+        app:layout_constraintBottom_toBottomOf="@id/textView"
+        android:layout_marginEnd="@dimen/led_center_margin"
+        android:layout_marginRight="@dimen/led_center_margin"
+        android:layout_marginBottom="@dimen/led_bottom_margin"
+        />
+
+    <View
+        android:id="@+id/circle2"
+        android:layout_width="@dimen/led_diameter"
+        android:layout_height="@dimen/led_diameter"
+        android:background="@drawable/circle"
+        app:layout_constraintBottom_toBottomOf="@id/textView"
+        app:layout_constraintEnd_toStartOf="@id/circle1"
+        android:layout_marginEnd="@dimen/led_between_margin"
+        android:layout_marginRight="@dimen/led_between_margin"
+        android:layout_marginBottom="@dimen/led_bottom_margin"
+        />
+
+    <View
+        android:id="@+id/circle3"
+        android:layout_width="@dimen/led_diameter"
+        android:layout_height="@dimen/led_diameter"
+        android:background="@drawable/circle"
+        app:layout_constraintBottom_toBottomOf="@id/textView"
+        app:layout_constraintEnd_toStartOf="@id/circle2"
+        android:layout_marginEnd="@dimen/led_between_margin"
+        android:layout_marginRight="@dimen/led_between_margin"
+        android:layout_marginBottom="@dimen/led_bottom_margin"
+        />
+
+    <View
+        android:id="@+id/circle4"
+        android:layout_width="@dimen/led_diameter"
+        android:layout_height="@dimen/led_diameter"
+        android:background="@drawable/circle"
+        app:layout_constraintBottom_toBottomOf="@id/textView"
+        app:layout_constraintStart_toStartOf="@id/dot4"
+        android:layout_marginStart="@dimen/led_center_margin"
+        android:layout_marginLeft="@dimen/led_center_margin"
+        android:layout_marginBottom="@dimen/led_bottom_margin"
+        />
+
+    <View
+        android:id="@+id/circle5"
+        android:layout_width="@dimen/led_diameter"
+        android:layout_height="@dimen/led_diameter"
+        android:background="@drawable/circle"
+        app:layout_constraintBottom_toBottomOf="@id/textView"
+        app:layout_constraintStart_toEndOf="@id/circle4"
+        android:layout_marginStart="@dimen/led_between_margin"
+        android:layout_marginLeft="@dimen/led_between_margin"
+        android:layout_marginBottom="@dimen/led_bottom_margin"
+        />
+
+    <View
+        android:id="@+id/circle6"
+        android:layout_width="@dimen/led_diameter"
+        android:layout_height="@dimen/led_diameter"
+        android:background="@drawable/circle"
+        app:layout_constraintBottom_toBottomOf="@id/textView"
+        app:layout_constraintStart_toEndOf="@id/circle5"
+        android:layout_marginStart="@dimen/led_between_margin"
+        android:layout_marginLeft="@dimen/led_between_margin"
+        android:layout_marginBottom="@dimen/led_bottom_margin"
+        />
 </android.support.constraint.ConstraintLayout>

@@ -9,13 +9,11 @@ class Brailler(switches: Array<Observable<Boolean>>) {
     val output: Observable<Cell>
         get() = cellOutputSubject.hide()
 
-    private val cellOutputSubject: PublishSubject<Cell>
+    private val cellOutputSubject: PublishSubject<Cell> = PublishSubject.create()
     private var resetting: Boolean = false
     private var lastValue: Int = 0
 
     init {
-        cellOutputSubject = PublishSubject.create()
-
         if (switches.size != 6) {
             throw IllegalArgumentException("Brailler only works with 6 switches.")
         }

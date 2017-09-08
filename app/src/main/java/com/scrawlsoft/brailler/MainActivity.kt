@@ -8,8 +8,6 @@ import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 
-//  1. Create 'LEDs' to show which buttons are pushed.
-//  2. Switch to views for the buttons
 //  3. Make the buttons turn red when pushed.
 //  4. Make the red be 'sticky' until the Cell is produced.
 //  5. Add delete, space, return buttons.
@@ -34,6 +32,7 @@ class MainActivity : AppCompatActivity() {
                                 evt.action == MotionEvent.ACTION_UP
                         }
                     .map { it.action == MotionEvent.ACTION_DOWN }
+                    .share()
         }
 
         val switches = arrayOf(
@@ -43,6 +42,13 @@ class MainActivity : AppCompatActivity() {
                 makeSwitch(R.id.dot4),
                 makeSwitch(R.id.dot5),
                 makeSwitch(R.id.dot6))
+
+        switches[0].subscribeBy { findViewById(R.id.circle1).isPressed = it }
+        switches[1].subscribeBy { findViewById(R.id.circle2).isPressed = it }
+        switches[2].subscribeBy { findViewById(R.id.circle3).isPressed = it }
+        switches[3].subscribeBy { findViewById(R.id.circle4).isPressed = it }
+        switches[4].subscribeBy { findViewById(R.id.circle5).isPressed = it }
+        switches[5].subscribeBy { findViewById(R.id.circle6).isPressed = it }
 
         val brailler = Brailler(switches)
         brailler.output.subscribeBy {
