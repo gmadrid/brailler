@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val brailler = Brailler(switches.toTypedArray())
-        brailler.output.subscribeBy {
+        brailler.cellOutput.subscribeBy {
             val textView = findViewById(R.id.textView) as TextView
             textView.append("" + it.codePoint)
 
