@@ -4,4 +4,5 @@
     <dimen name="led_bottom_margin">5dp</dimen>
     <dimen name="led_center_margin">10dp</dimen>
     <dimen name="led_between_margin">5dp</dimen>
+    <dimen name="led_ring_width">3dp</dimen>
 </resources>
