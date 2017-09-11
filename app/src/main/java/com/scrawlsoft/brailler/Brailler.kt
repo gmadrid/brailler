@@ -18,10 +18,14 @@ class Brailler(switches: Array<Observable<Boolean>>) {
             throw IllegalArgumentException("Brailler only works with 6 switches.")
         }
 
-        fun switchWithValue(switch: Observable<Boolean>, value: Int) : Observable<Int> {
+        fun switchWithValue(switch: Observable<Boolean>, value: Int): Observable<Int> {
             // Map the incoming Boolean to the supplied value (or 0 iff false). Prime it with 0.
             return switch.map {
-                if (it) { value } else { 0 }
+                if (it) {
+                    value
+                } else {
+                    0
+                }
             }.startWith(0)
         }
 
@@ -39,7 +43,7 @@ class Brailler(switches: Array<Observable<Boolean>>) {
                 switchesWithValue[3],
                 switchesWithValue[4],
                 switchesWithValue[5],
-                { i1, i2, i3, i4, i5, i6 -> i1 + i2 + i3 + i4 + i5 + i6 } )
+                { i1, i2, i3, i4, i5, i6 -> i1 + i2 + i3 + i4 + i5 + i6 })
                 .subscribeBy(onNext = { combinedValue ->
                     // The value will go down as soon as we release any key.
                     // If we are resetting, then never send a value.
