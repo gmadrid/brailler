@@ -19,11 +19,9 @@ package com.scrawlsoft.brailler
  *
  *  Once instantiated, the Cell is immutable.
  */
-data class Cell(private val dotsAsBits: Short) {
+data class Cell(val cellValue: Short) {
     val codePoint: Char
-        get() = (BRAILLE_PATTERN_BLANK + dotsAsBits).toChar()
-
-    fun toShort(): Short = dotsAsBits
+        get() = (BRAILLE_PATTERN_BLANK + cellValue).toChar()
 
     class Builder internal constructor() {
 

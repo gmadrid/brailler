@@ -21,11 +21,43 @@ import io.reactivex.subjects.PublishSubject
  *   LEDs: 6 LED lights, one for each embossing switch.
  */
 class Brailler(switches: Array<Observable<Boolean>>) {
+    /*
+     * Behaviors
+     *   - START mode
+     *     - On entering START mode, turn off all LEDs
+     *     - Once any embossing switch is pressed, we enter EMBOSSING mode.
+     *   - EMBOSSING mode
+     *     - Hitting any more embossing switches
+     *       - add those dots to the final character.
+     *       - turn on the associated LED
+     *     - Releasing any embossing switch enters RESET mode
+     *   - RESET mode
+     *     - ignore all switches until no switches are pressed.
+     *     - when no switches are pressed, enter START mode
+     */
+
     val cellOutput: Observable<Cell>
     val ledOutput: Array<Observable<Boolean>>;
 
+    private enum class Mode {
+        START,
+        EMBOSSING,
+        RESET
+    }
+
     private val cellOutputSubject: PublishSubject<Cell> = PublishSubject.create()
-    private val ledOutputSubjects: Array<PublishSubject<Boolean>> = Array(6) { PublishSubject.create<Boolean>() }
+    private val ledOutputSubjects: Array<PublishSubject<Boolean>> =
+            Array(6) { PublishSubject.create<Boolean>() }
+
+    private var mode: Mode = Mode.START
+        set(value) {
+            when (value) {
+                Mode.EMBOSSING -> {
+                    ledOutputSubjects.forEach { it.onNext(false) }
+                }
+            }
+        }
+
     private var resetting: Boolean = false
     private var lastValue: Int = 0
 
