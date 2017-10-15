@@ -1,8 +1,12 @@
 package com.scrawlsoft.brailler
 
+import android.content.Context
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.support.v7.app.AppCompatActivity
 import android.view.MotionEvent
+import android.view.View
 import android.widget.TextView
 import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
@@ -39,16 +43,23 @@ class MainActivity : AppCompatActivity() {
                     .share()
         }
 
-        val ledViews = ledIds.map { findViewById(it) }
+        val ledViews = ledIds.map { findViewById<View>(it) }
         val switches = switchIds.map { makeSwitch(it) }
 
-        switches.zip(ledViews) { switch, ledView ->
+        Observable.merge(switches).subscribeBy {
+            if (it) {
+                val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE))
+            }
+        }
+
+        switches.zip(ledViews) { switch, ledView: View ->
             switch.subscribeBy { if (it) ledView.isPressed = true }
         }
 
         val brailler = Brailler(switches.toTypedArray())
         brailler.cellOutput.subscribeBy {
-            val textView = findViewById(R.id.textView) as TextView
+            val textView = findViewById<TextView>(R.id.textView)
             textView.append("" + it.codePoint)
 
             ledViews.forEach { it.isPressed = false }

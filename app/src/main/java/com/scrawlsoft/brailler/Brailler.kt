@@ -5,6 +5,21 @@ import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
 
+/**
+ * Emulated a Perkins Brailler with some extra electronic features.
+ *
+ * Inputs:
+ *   Embossing switches (1-6).
+ *   Return switch
+ *   Backspace switch
+ *   Space switch
+ *
+ * Outputs:
+ *   Cell: the Cell that will be "embossed".
+ *   Embossing enabled: whether the embossing switches are enabled
+ *   Others enabled: whether the return, backspace, and space switches are enabled.
+ *   LEDs: 6 LED lights, one for each embossing switch.
+ */
 class Brailler(switches: Array<Observable<Boolean>>) {
     val cellOutput: Observable<Cell>
     val ledOutput: Array<Observable<Boolean>>;
