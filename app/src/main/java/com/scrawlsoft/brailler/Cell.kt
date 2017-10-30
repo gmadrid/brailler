@@ -15,42 +15,40 @@ package com.scrawlsoft.brailler
  *
  *  You may also use the Builder, so a Braille 'e' would be:
  *
- *    Cell.new().dot1().dot5().toCell()
+ *    Cell.build().dot1().dot5().toCell()
  *
  *  Once instantiated, the Cell is immutable.
  */
-data class Cell(private val dotsAsBits: Short) {
+data class Cell(val cellValue: Short) {
     val codePoint: Char
-        get() = (BRAILLE_PATTERN_BLANK + dotsAsBits).toChar()
-
-    fun toShort(): Short = dotsAsBits
+        get() = (BRAILLE_PATTERN_BLANK + cellValue).toChar()
 
     class Builder internal constructor() {
 
-        private var bits: Int = 0
+        private var bits: Short = 0
 
-        fun dot1(): Builder { bits = bits.or(DOT1); return this }
-        fun dot2(): Builder { bits = bits.or(DOT2); return this }
-        fun dot3(): Builder { bits = bits.or(DOT3); return this }
-        fun dot4(): Builder { bits = bits.or(DOT4); return this }
-        fun dot5(): Builder { bits = bits.or(DOT5); return this }
-        fun dot6(): Builder { bits = bits.or(DOT6); return this }
-        fun dot7(): Builder { bits = bits.or(DOT7); return this }
-        fun dot8(): Builder { bits = bits.or(DOT8); return this }
+        fun dot1(): Builder { bits = bits.toInt().or(DOT1.toInt()).toShort(); return this }
+        fun dot2(): Builder { bits = bits.toInt().or(DOT2.toInt()).toShort(); return this }
+        fun dot3(): Builder { bits = bits.toInt().or(DOT3.toInt()).toShort(); return this }
+        fun dot4(): Builder { bits = bits.toInt().or(DOT4.toInt()).toShort(); return this }
+        fun dot5(): Builder { bits = bits.toInt().or(DOT5.toInt()).toShort(); return this }
+        fun dot6(): Builder { bits = bits.toInt().or(DOT6.toInt()).toShort(); return this }
+        fun dot7(): Builder { bits = bits.toInt().or(DOT7.toInt()).toShort(); return this }
+        fun dot8(): Builder { bits = bits.toInt().or(DOT8.toInt()).toShort(); return this }
 
         fun toCell() = Cell(bits.toShort())
     }
 
     companion object {
         private const val BRAILLE_PATTERN_BLANK: Short = '\u2800'.toShort();
-        const val DOT1: Int = 0x01
-        const val DOT2: Int = 0x02
-        const val DOT3: Int = 0x04
-        const val DOT4: Int = 0x08
-        const val DOT5: Int = 0x10
-        const val DOT6: Int = 0x20
-        const val DOT7: Int = 0x40
-        const val DOT8: Int = 0x80
+        const val DOT1: Short = 0x01
+        const val DOT2: Short = 0x02
+        const val DOT3: Short = 0x04
+        const val DOT4: Short = 0x08
+        const val DOT5: Short = 0x10
+        const val DOT6: Short = 0x20
+        const val DOT7: Short = 0x40
+        const val DOT8: Short = 0x80
 
         fun build() : Builder {
             return Builder()
