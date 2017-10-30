@@ -37,7 +37,7 @@ class Brailler(switches: Array<Observable<Boolean>>) {
      */
 
     val cellOutput: Observable<Cell>
-    val ledOutput: Array<Observable<Boolean>>;
+    val ledOutput: Array<Observable<Boolean>>
 
     private enum class Mode {
         START,
@@ -55,6 +55,7 @@ class Brailler(switches: Array<Observable<Boolean>>) {
                 Mode.EMBOSSING -> {
                     ledOutputSubjects.forEach { it.onNext(false) }
                 }
+                else -> {}
             }
         }
 
@@ -72,7 +73,7 @@ class Brailler(switches: Array<Observable<Boolean>>) {
         var value = 1
         val switchesWithValue = switches.map {
             val currentValue = value
-            value *= 2;
+            value *= 2
             switchWithValue(it, currentValue)
         }
 
