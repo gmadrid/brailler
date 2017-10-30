@@ -24,8 +24,6 @@ class Brailler(switches: Array<Observable<Boolean>>) {
     val output: Observable<Cell>
         get() = cellOutputSubject.hide()
 
-    private val cellOutputSubject: PublishSubject<Cell> = PublishSubject.create()
-
     /*
      * Behaviors
      *   - START mode
