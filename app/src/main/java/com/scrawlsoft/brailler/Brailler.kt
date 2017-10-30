@@ -6,20 +6,27 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
 
 class Brailler(switches: Array<Observable<Boolean>>) {
-    val cellOutput: Observable<Cell>
-    val ledOutput: Array<Observable<Boolean>>;
+    val output: Observable<Cell>
+        get() = cellOutputSubject.hide()
 
     private val cellOutputSubject: PublishSubject<Cell> = PublishSubject.create()
-    private val ledOutputSubjects: Array<PublishSubject<Boolean>> = Array(6) { PublishSubject.create<Boolean>() }
     private var resetting: Boolean = false
     private var lastValue: Int = 0
 
     init {
-        cellOutput = cellOutputSubject.hide()
-        ledOutput = Array(ledOutputSubjects.size) { ledOutputSubjects[it].hide() }
-
         if (switches.size != 6) {
             throw IllegalArgumentException("Brailler only works with 6 switches.")
+        }
+
+        fun switchWithValue(switch: Observable<Boolean>, value: Int): Observable<Int> {
+            // Map the incoming Boolean to the supplied value (or 0 iff false). Prime it with 0.
+            return switch.map {
+                if (it) {
+                    value
+                } else {
+                    0
+                }
+            }.startWith(0)
         }
 
         var value = 1
@@ -55,22 +62,5 @@ class Brailler(switches: Array<Observable<Boolean>>) {
                         lastValue = 0
                     }
                 })
-    }
-
-    companion object {
-
-        private fun switchWithValue(switch: Observable<Boolean>, value: Int): Observable<Int> {
-            // Map the incoming Boolean to the supplied value (or 0 iff false). Prime it with 0.
-            return switch.map {
-                if (it) {
-                    value
-                } else {
-                    0
-                }
-            }.startWith(0)
-        }
-
-//        private fun
-
     }
 }

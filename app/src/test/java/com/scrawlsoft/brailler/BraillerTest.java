@@ -62,7 +62,7 @@ public class BraillerTest {
     public void brailler_simple_a() {
         Brailler brailler = makeStandardBrailler();
 
-        brailler.getCellOutput().subscribe(new Consumer<Cell>() {
+        brailler.getOutput().subscribe(new Consumer<Cell>() {
             @Override
             public void accept(Cell cell) throws Exception {
                 outputCell = cell;
@@ -75,7 +75,7 @@ public class BraillerTest {
         dot1.onNext(false);
         assertNotNull(outputCell);
 
-        // We should cellOutput a cell with only dot 1 set.
+        // We should output a cell with only dot 1 set.
         assertEquals(Cell.DOT1, outputCell.toShort());
     }
 
@@ -83,7 +83,7 @@ public class BraillerTest {
     public void brailler_simple_g() {
         Brailler brailler = makeStandardBrailler();
 
-        brailler.getCellOutput().subscribe(new Consumer<Cell>() {
+        brailler.getOutput().subscribe(new Consumer<Cell>() {
             @Override
             public void accept(Cell cell) throws Exception {
                 outputCell = cell;
@@ -92,7 +92,7 @@ public class BraillerTest {
         assertNull(outputCell);
 
         // Simulate pushing and releasing dots 1, 2, 4, 5.
-        // Make sure that there is no cellOutput until the first released key.
+        // Make sure that there is no output until the first released key.
         dot1.onNext(true);
         assertNull(outputCell);
         dot2.onNext(true);
@@ -102,7 +102,7 @@ public class BraillerTest {
         dot5.onNext(true);
         assertNull(outputCell);
 
-        // Immediately on releasing a single key, we should get cellOutput.
+        // Immediately on releasing a single key, we should get output.
         dot1.onNext(false);
         assertNotNull(outputCell);
 
@@ -115,7 +115,7 @@ public class BraillerTest {
         dot4.onNext(false);
         assertEquals(rememberedCell, outputCell);
 
-        // We should cellOutput a cell with only dot 1 set.
+        // We should output a cell with only dot 1 set.
         assertEquals(Cell.DOT1 | Cell.DOT2 | Cell.DOT4 | Cell.DOT5, outputCell.toShort());
     }
 
@@ -123,7 +123,7 @@ public class BraillerTest {
     public void brailler_two_cells() {
         Brailler brailler = makeStandardBrailler();
 
-        brailler.getCellOutput().subscribe(new Consumer<Cell>() {
+        brailler.getOutput().subscribe(new Consumer<Cell>() {
             @Override
             public void accept(Cell cell) throws Exception {
                 outputCell = cell;
@@ -149,13 +149,6 @@ public class BraillerTest {
         assertEquals(outputCount, 2);
         assertEquals(Cell.DOT1 | Cell.DOT5, firstCell.toShort());
         assertEquals(Cell.DOT2 | Cell.DOT4, secondCell.toShort());
-    }
-
-    @Test
-    public void correct_number_leds() {
-        Brailler brailler = makeStandardBrailler();
-
-        assertEquals(6, brailler.getLedOutput().length);
     }
 }
 
