@@ -3,6 +3,7 @@ package com.scrawlsoft.brailler
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
 /**
@@ -16,9 +17,9 @@ import io.reactivex.subjects.PublishSubject
  *
  * Outputs:
  *   Cell: the Cell that will be "embossed".
+ *   LEDs: 6 LED lights, one for each embossing switch.
  *   Embossing enabled: whether the embossing switches are enabled
  *   Others enabled: whether the return, backspace, and space switches are enabled.
- *   LEDs: 6 LED lights, one for each embossing switch.
  */
 class Brailler(switches: Array<Observable<Boolean>>) {
     /*
@@ -38,8 +39,8 @@ class Brailler(switches: Array<Observable<Boolean>>) {
 
     val cellOutput: Observable<Cell>
         get() = cellOutputSubject.hide()
-    val ledOutput: Array<Observable<Boolean>>
-        get() = Array(ledOutputSubjects.size) { ledOutputSubjects[it].hide() }
+    val ledState: Array<BehaviorSubject<Boolean>> =
+            Array(6) { BehaviorSubject.createDefault(false) }
 
     private enum class Mode {
         START,
@@ -48,18 +49,8 @@ class Brailler(switches: Array<Observable<Boolean>>) {
     }
 
     private val cellOutputSubject: PublishSubject<Cell> = PublishSubject.create()
-    private val ledOutputSubjects: Array<PublishSubject<Boolean>> =
-            Array(6) { PublishSubject.create<Boolean>() }
 
     private var mode: Mode = Mode.START
-        set(value) {
-            when (value) {
-                Mode.EMBOSSING -> {
-                    ledOutputSubjects.forEach { it.onNext(false) }
-                }
-                else -> {}
-            }
-        }
 
     private var resetting: Boolean = false
     private var lastValue: Int = 0

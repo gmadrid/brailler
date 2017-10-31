@@ -67,7 +67,7 @@ class BraillerTest {
     @Test
     fun correctNumberOfLeds() {
         val brailler = makeTestBrailler()
-        assertEquals(6, brailler.ledOutput.size)
+        assertEquals(6, brailler.ledState.size)
     }
 
 
@@ -166,5 +166,21 @@ class BraillerTest {
         dot5.onNext(false)
 
         assertEquals(Cell.DOT2 or Cell.DOT4, outputCell?.cellValue)
+    }
+
+    @Test
+    fun testLedsOn() {
+        val brailler = makeTestBrailler()
+
+        val dots = arrayOf(dot1, dot2, dot3, dot4, dot5, dot6);
+
+        // LEDs start off
+        brailler.ledState.forEach { assertFalse(it.value) }
+        on(*dots)
+        // Turn on when keys are pressed
+        brailler.ledState.forEach { assertTrue(it.value) }
+        off(*dots)
+        // Turn back off when released
+        brailler.ledState.forEach { assertFalse(it.value) }
     }
 }
