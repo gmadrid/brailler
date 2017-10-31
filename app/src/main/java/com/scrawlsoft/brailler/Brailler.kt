@@ -21,9 +21,6 @@ import io.reactivex.subjects.PublishSubject
  *   LEDs: 6 LED lights, one for each embossing switch.
  */
 class Brailler(switches: Array<Observable<Boolean>>) {
-    val output: Observable<Cell>
-        get() = cellOutputSubject.hide()
-
     /*
      * Behaviors
      *   - START mode
@@ -40,7 +37,9 @@ class Brailler(switches: Array<Observable<Boolean>>) {
      */
 
     val cellOutput: Observable<Cell>
+        get() = cellOutputSubject.hide()
     val ledOutput: Array<Observable<Boolean>>
+        get() = Array(ledOutputSubjects.size) { ledOutputSubjects[it].hide() }
 
     private enum class Mode {
         START,
