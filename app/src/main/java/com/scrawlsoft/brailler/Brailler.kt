@@ -32,6 +32,7 @@ class Brailler(switches: Array<Observable<Boolean>>) {
      *       - add those dots to the final character.
      *       - turn on the associated LED
      *     - Releasing any embossing switch enters RESET mode
+     *       - and output the Cell
      *   - RESET mode
      *     - ignore all switches until no switches are pressed.
      *     - when no switches are pressed, enter START mode
@@ -51,8 +52,17 @@ class Brailler(switches: Array<Observable<Boolean>>) {
     private val cellOutputSubject: PublishSubject<Cell> = PublishSubject.create()
 
     private var mode: Mode = Mode.START
+    set(value) {
+        when (value) {
+            Mode.START -> {
+                // When entering START, turn off all of the LEDs
+                ledState.forEach { it.onNext(false) }
+            }
+            else -> {}
+        }
+        field = value
+    }
 
-    private var resetting: Boolean = false
     private var lastValue: Int = 0
 
     init {
@@ -78,31 +88,63 @@ class Brailler(switches: Array<Observable<Boolean>>) {
             switchWithValue(it, currentValue)
         }
 
+        switchesWithValue.zip(ledState).forEach { (s, l) ->
+            s.subscribeBy {
+                if (mode != Mode.RESET) {
+                    l.onNext(it != 0)
+                }
+            }
+        }
+
         Observables.combineLatest(
                 switchesWithValue[0],
                 switchesWithValue[1],
                 switchesWithValue[2],
                 switchesWithValue[3],
                 switchesWithValue[4],
-                switchesWithValue[5],
-                { i1, i2, i3, i4, i5, i6 -> i1 + i2 + i3 + i4 + i5 + i6 })
+                switchesWithValue[5])
+                { i1, i2, i3, i4, i5, i6 -> i1 + i2 + i3 + i4 + i5 + i6 }
                 .subscribeBy(onNext = { combinedValue ->
-                    // The value will go down as soon as we release any key.
-                    // If we are resetting, then never send a value.
-                    if (!resetting && combinedValue < lastValue) {
-                        // Send the value *before* releasing a key, and enter resetting state.
-                        // cellOutputSubject foo
-                        cellOutputSubject.onNext(Cell(lastValue.toShort()))
-                        resetting = true
+                    when (mode) {
+                        Mode.START -> {
+                            lastValue = combinedValue
+                            mode = Mode.EMBOSSING
+                        }
+                        Mode.EMBOSSING -> {
+                            if (combinedValue < lastValue) {
+                                cellOutputSubject.onNext(Cell(lastValue.toShort()))
+                                mode = Mode.RESET
+                            } else {
+                                lastValue = combinedValue
+                            }
+                            if (combinedValue == 0) {
+                                mode = Mode.START
+                                lastValue = 0
+                            }
+                        }
+                        Mode.RESET -> {
+                            if (combinedValue == 0) {
+                                mode = Mode.START
+                                lastValue = 0
+                            }
+                        }
                     }
-                    if (!resetting) {
-                        lastValue = combinedValue
-                    }
-                    // As soon as all switches are released, start over.
-                    if (combinedValue == 0) {
-                        resetting = false
-                        lastValue = 0
-                    }
+//                    // The value will go down as soon as we release any key.
+//                    // If we are resetting, then never send a value.
+//                    if (!resetting && combinedValue < lastValue) {
+//                        // Send the value *before* releasing a key, and enter resetting state.
+//                        // cellOutputSubject foo
+//                        cellOutputSubject.onNext(Cell(lastValue.toShort()))
+//                        resetting = true
+//                    }
+//                    if (!resetting) {
+//                        lastValue = combinedValue
+//                    }
+//                    // As soon as all switches are released, start over.
+//                    if (combinedValue == 0) {
+//                        resetting = false
+//                        lastValue = 0
+//                    }
                 })
     }
 }

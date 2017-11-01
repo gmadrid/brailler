@@ -172,6 +172,7 @@ class BraillerTest {
     fun testLedsOn() {
         val brailler = makeTestBrailler()
 
+        // All of the dots
         val dots = arrayOf(dot1, dot2, dot3, dot4, dot5, dot6);
 
         // LEDs start off
