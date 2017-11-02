@@ -173,7 +173,7 @@ class BraillerTest {
         val brailler = makeTestBrailler()
 
         // All of the dots
-        val dots = arrayOf(dot1, dot2, dot3, dot4, dot5, dot6);
+        val dots = arrayOf(dot1, dot2, dot3, dot4, dot5, dot6)
 
         // LEDs start off
         brailler.ledState.forEach { assertFalse(it.value) }
@@ -182,6 +182,40 @@ class BraillerTest {
         brailler.ledState.forEach { assertTrue(it.value) }
         off(*dots)
         // Turn back off when released
+        brailler.ledState.forEach { assertFalse(it.value) }
+    }
+
+    @Test
+    fun testLedsOnUntilOutput() {
+        var brailler = makeTestBrailler()
+
+        // All of the dots
+        val dots = arrayOf(dot1, dot2, dot3, dot4, dot5, dot6)
+
+        // LEDs start off
+        brailler.ledState.forEach { assertFalse(it.value) }
+
+        // Press the dots in a 'd'.
+        on(dot1, dot4, dot5)
+        val ledVals = arrayOf(true, false, false, true, true, false)
+        ledVals.zip(brailler.ledState) { expected, state ->
+            assertEquals(expected, state.value)
+        }
+
+        // Let go of one button and make sure all LEDs stay on.
+        off(dot1)
+        ledVals.zip(brailler.ledState) { expected, state ->
+            assertEquals(expected, state.value)
+        }
+
+        // Let go of the second one.
+        off(dot4)
+        ledVals.zip(brailler.ledState) { expected, state ->
+            assertEquals(expected, state.value)
+        }
+
+        // When all keys are released, LEDs should clear.
+        off(dot5)
         brailler.ledState.forEach { assertFalse(it.value) }
     }
 }

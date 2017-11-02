@@ -91,7 +91,7 @@ class Brailler(switches: Array<Observable<Boolean>>) {
         switchesWithValue.zip(ledState).forEach { (s, l) ->
             s.subscribeBy {
                 if (mode != Mode.RESET) {
-                    l.onNext(it != 0)
+                    if (it != 0) l.onNext(true)
                 }
             }
         }
@@ -129,22 +129,6 @@ class Brailler(switches: Array<Observable<Boolean>>) {
                             }
                         }
                     }
-//                    // The value will go down as soon as we release any key.
-//                    // If we are resetting, then never send a value.
-//                    if (!resetting && combinedValue < lastValue) {
-//                        // Send the value *before* releasing a key, and enter resetting state.
-//                        // cellOutputSubject foo
-//                        cellOutputSubject.onNext(Cell(lastValue.toShort()))
-//                        resetting = true
-//                    }
-//                    if (!resetting) {
-//                        lastValue = combinedValue
-//                    }
-//                    // As soon as all switches are released, start over.
-//                    if (combinedValue == 0) {
-//                        resetting = false
-//                        lastValue = 0
-//                    }
                 })
     }
 }

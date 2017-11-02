@@ -29,9 +29,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
         fun makeSwitch(id: Int): Observable<Boolean> {
             return RxView.touches(findViewById(id))
                     .filter { evt ->
@@ -43,9 +40,13 @@ class MainActivity : AppCompatActivity() {
                     .share()
         }
 
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
         val ledViews = ledIds.map { findViewById<View>(it) }
         val switches = switchIds.map { makeSwitch(it) }
 
+        // Vibrate whenever a switch is pushed
         Observable.merge(switches).subscribeBy {
             if (it) {
                 val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
@@ -53,16 +54,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        switches.zip(ledViews) { switch, ledView: View ->
-            switch.subscribeBy { if (it) ledView.isPressed = true }
-        }
-
         val brailler = Brailler(switches.toTypedArray())
+
+        // Whenever the brailler outputs a cell, add it to the text view.
         brailler.cellOutput.subscribeBy {
             val textView = findViewById<TextView>(R.id.textView)
             textView.append("" + it.codePoint)
+        }
 
-            ledViews.forEach { it.isPressed = false }
+        // Attach the led views to the led outputs.
+        ledViews.zip(brailler.ledState) { view, state ->
+            state.subscribeBy { view.isPressed = it }
         }
     }
 }
